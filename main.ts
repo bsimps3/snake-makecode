@@ -1,5 +1,5 @@
 function targetNewPoint () {
-    while (led.point(x_target, y_target)) {
+    while (x_target == x && y_target == y || (score >= 2 && (x_target == old_x && y_target == old_y) || x_target == old_x_2 && y_target == old_y_2)) {
         x_target = randint(0, 4)
         y_target = randint(0, 4)
     }
@@ -7,7 +7,7 @@ function targetNewPoint () {
 input.onButtonPressed(Button.A, function () {
     direction = "left"
 })
-input.onPinPressed(TouchPin.P2, function () {
+input.onButtonPressed(Button.AB, function () {
     direction = "down"
 })
 input.onButtonPressed(Button.B, function () {
@@ -66,12 +66,14 @@ while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
         y += -1
     }
     if (x == x_target && y == y_target) {
-        led.unplot(x_target, y_target)
         score += 1
         targetNewPoint()
         led.plot(x_target, y_target)
     }
     drawScreen()
-    basic.pause(1000)
+    for (let index = 0; index < 20; index++) {
+        basic.pause(50)
+        led.toggle(x, y)
+    }
 }
 basic.showIcon(IconNames.No)
