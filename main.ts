@@ -1,3 +1,9 @@
+function targetNewPoint () {
+    while (led.point(x_target, y_target)) {
+        x_target = randint(0, 4)
+        y_target = randint(0, 4)
+    }
+}
 input.onButtonPressed(Button.A, function () {
     direction = "left"
 })
@@ -61,8 +67,7 @@ while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
         if (x == x_target && y == y_target) {
             led.unplot(x_target, y_target)
             score += 1
-            x_target = randint(0, 4)
-            y_target = randint(0, 4)
+            targetNewPoint()
             led.plot(x_target, y_target)
         }
     }
