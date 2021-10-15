@@ -58,13 +58,13 @@ while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
         x += -1
     } else {
         y += -1
-        if (x == x_target && y == y_target) {
-            led.unplot(x_target, y_target)
-            score += 1
-            x_target = randint(0, 4)
-            y_target = randint(0, 4)
-            led.plot(x_target, y_target)
-        }
+    }
+    if (x == x_target && y == y_target) {
+        led.unplot(x_target, y_target)
+        score += 1
+        x_target = randint(0, 4)
+        y_target = randint(0, 4)
+        led.plot(x_target, y_target)
     }
     drawScreen()
     basic.pause(1000)
