@@ -25,8 +25,15 @@ let old_y_2 = 0
 let old_x = 0
 let old_x_2 = 0
 let sprite: game.LedSprite = null
+basic.showLeds(`
+    . . . . .
+    . # # # .
+    . # . # .
+    . # # # .
+    . . . . .
+    `)
 game.setScore(1)
-sprite = game.createSprite(1, 1)
+sprite = game.createSprite(0, 0)
 let target = game.createSprite(randint(0, 4), randint(0, 4))
 while (true) {
     old_x_2 = old_x
@@ -36,6 +43,8 @@ while (true) {
     sprite.move(1)
     if (sprite.isTouching(target)) {
         game.addScore(1)
+        target.set(LedSpriteProperty.X, randint(0, 4))
+        target.set(LedSpriteProperty.Y, randint(0, 4))
         if (game.score() == 2) {
             sprite2 = game.createSprite(old_x, old_y)
         }
@@ -55,3 +64,4 @@ while (true) {
     }
     basic.pause(1000)
 }
+game.gameOver()
