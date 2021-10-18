@@ -1,13 +1,15 @@
 // should check where the snake currently is, and return a value for target which doesn't overlap snake
 function targetNewPoint () {
-    index2 = 0
-    while (true) {
+    isInList = true
+    while (isInList) {
+        isInList = false
         x_target = randint(0, 4)
         y_target = randint(0, 4)
-        if (!(x_target == list[2 * index2]) && !(y_target == list[index2 * 2 + 1])) {
-            break;
+        for (let index = 0; index <= score; index++) {
+            if (x_target == list[2 * index] && y_target == list[index * 2 + 1]) {
+                isInList = true
+            }
         }
-        index2 += 1
     }
 }
 input.onButtonPressed(Button.A, function () {
@@ -28,7 +30,7 @@ function drawScreen () {
         led.plot(list[2 * index], list[2 * index + 1])
     }
 }
-let index2 = 0
+let isInList = false
 let y = 0
 let x = 0
 let y_target = 0
