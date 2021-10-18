@@ -5,11 +5,7 @@ function targetNewPoint () {
         isInList = false
         x_target = randint(0, 4)
         y_target = randint(0, 4)
-    }
-    for (let index = 0; index <= score; index++) {
-        if (x_target == list[2 * index] && y_target == list[index * 2 + 1]) {
-            isInList = true
-        }
+        isInList = isSnake(x_target, y_target)
     }
 }
 input.onButtonPressed(Button.A, function () {
@@ -24,6 +20,14 @@ input.onButtonPressed(Button.B, function () {
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     direction = "up"
 })
+function isSnake (x: number, y: number) {
+    for (let index = 0; index <= score; index++) {
+        if (x == list[2 * index] && y == list[index * 2 + 1]) {
+            return true
+        }
+    }
+    return false
+}
 function drawScreen () {
     led.plot(x_target, y_target)
     for (let index = 0; index <= score; index++) {
@@ -58,6 +62,10 @@ while (list[0] < 5 && (list[0] >= 0 && (list[1] < 5 && list[1] >= 0)) && score <
         list[0] = list[0] + -1
     } else {
         list[1] = list[1] + -1
+    }
+    // It is failing because the head is in list always.
+    if (isSnake(list[0], list[1])) {
+        break;
     }
     if (list[0] == x_target && list[1] == y_target) {
         score += 1
