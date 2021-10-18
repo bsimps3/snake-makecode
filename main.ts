@@ -1,10 +1,13 @@
+// should check where the snake currently is, and return a value for target which doesn't overlap snake
 function targetNewPoint () {
-    for (let index = 0; index <= list.length / 2; index++) {
+    index2 = 0
+    while (true) {
         x_target = randint(0, 4)
         y_target = randint(0, 4)
-        if (!(x_target == list[index]) && !(y_target == list[index + 1])) {
+        if (!(x_target == list[2 * index2]) && !(y_target == list[index2 * 2 + 1])) {
             break;
         }
+        index2 += 1
     }
 }
 input.onButtonPressed(Button.A, function () {
@@ -25,6 +28,7 @@ function drawScreen () {
         led.plot(list[2 * index], list[2 * index + 1])
     }
 }
+let index2 = 0
 let y = 0
 let x = 0
 let y_target = 0
@@ -41,10 +45,10 @@ y_target = randint(0, 4)
 led.toggle(x_target, y_target)
 drawScreen()
 basic.pause(1000)
-while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
+while (x < 5 && (x >= 0 && (y < 5 && y >= 0)) && score < 25) {
     basic.clearScreen()
-    list.push(list[0])
-    list.push(list[1])
+    list.insertAt(2, list[0])
+    list.insertAt(3, list[1])
     // movement if statements
     // 
     if (direction == "right") {
@@ -54,7 +58,7 @@ while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
     } else if (direction == "left") {
         list[0] = list[0] + -1
     } else {
-        list[1] = list[0] + -1
+        list[1] = list[1] + -1
     }
     if (list[0] == x_target && list[1] == y_target) {
         score += 1
@@ -62,9 +66,17 @@ while (x < 5 && (x >= 0 && (y < 5 && y >= 0))) {
         led.plot(x_target, y_target)
     }
     drawScreen()
-    for (let index = 0; index < 20; index++) {
-        basic.pause(50)
-        led.toggle(list[0], list[1])
+    for (let index = 0; index < 2; index++) {
+        basic.pause(40)
+        led.toggle(x_target, y_target)
+        for (let index = 0; index < 9; index++) {
+            basic.pause(40)
+            led.toggle(list[0], list[1])
+        }
     }
 }
-basic.showIcon(IconNames.No)
+if (score == 25) {
+    basic.showIcon(IconNames.Yes)
+} else {
+    basic.showIcon(IconNames.No)
+}
