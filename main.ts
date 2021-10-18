@@ -5,10 +5,10 @@ function targetNewPoint () {
         isInList = false
         x_target = randint(0, 4)
         y_target = randint(0, 4)
-        for (let index = 0; index <= score; index++) {
-            if (x_target == list[2 * index] && y_target == list[index * 2 + 1]) {
-                isInList = true
-            }
+    }
+    for (let index = 0; index <= score; index++) {
+        if (x_target == list[2 * index] && y_target == list[index * 2 + 1]) {
+            isInList = true
         }
     }
 }
@@ -31,8 +31,6 @@ function drawScreen () {
     }
 }
 let isInList = false
-let y = 0
-let x = 0
 let y_target = 0
 let x_target = 0
 let list: number[] = []
@@ -42,12 +40,11 @@ score = 0
 direction = "right"
 list = [0, 0]
 led.toggle(list[0], list[1])
-x_target = randint(0, 4)
-y_target = randint(0, 4)
+targetNewPoint()
 led.toggle(x_target, y_target)
 drawScreen()
 basic.pause(1000)
-while (x < 5 && (x >= 0 && (y < 5 && y >= 0)) && score < 25) {
+while (list[0] < 5 && (list[0] >= 0 && (list[1] < 5 && list[1] >= 0)) && score < 25) {
     basic.clearScreen()
     list.insertAt(2, list[0])
     list.insertAt(3, list[1])
