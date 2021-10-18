@@ -1,57 +1,81 @@
+// should check where the snake currently is, and return a value for target which doesn't overlap snake
+function targetNewPoint () {
+    isInList = true
+    while (isInList) {
+        isInList = false
+        x_target = randint(0, 4)
+        y_target = randint(0, 4)
+    }
+    for (let index = 0; index <= score; index++) {
+        if (x_target == list[2 * index] && y_target == list[index * 2 + 1]) {
+            isInList = true
+        }
+    }
+}
 input.onButtonPressed(Button.A, function () {
-    if (sprite.get(LedSpriteProperty.Direction) == 0 || sprite.get(LedSpriteProperty.Direction) == 180) {
-        sprite.set(LedSpriteProperty.Direction, -90)
-    }
+    direction = "left"
 })
-input.onPinPressed(TouchPin.P2, function () {
-    if (sprite.get(LedSpriteProperty.Direction) == -90 || sprite.get(LedSpriteProperty.Direction) == 90) {
-        sprite.set(LedSpriteProperty.Direction, 180)
-    }
+input.onButtonPressed(Button.AB, function () {
+    direction = "down"
 })
 input.onButtonPressed(Button.B, function () {
-    if (sprite.get(LedSpriteProperty.Direction) == 0 || sprite.get(LedSpriteProperty.Direction) == 180) {
-        sprite.set(LedSpriteProperty.Direction, 90)
-    }
+    direction = "right"
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    if (sprite.get(LedSpriteProperty.Direction) == -90 || sprite.get(LedSpriteProperty.Direction) == 90) {
-        sprite.set(LedSpriteProperty.Direction, 0)
-    }
+    direction = "up"
 })
-let sprite3: game.LedSprite = null
-let sprite2: game.LedSprite = null
-let old_y = 0
-let old_y_2 = 0
-let old_x = 0
-let old_x_2 = 0
-let sprite: game.LedSprite = null
-game.setScore(1)
-sprite = game.createSprite(1, 1)
-let target = game.createSprite(randint(0, 4), randint(0, 4))
-while (true) {
-    old_x_2 = old_x
-    old_y_2 = old_y
-    old_x = sprite.get(LedSpriteProperty.X)
-    old_y = sprite.get(LedSpriteProperty.Y)
-    sprite.move(1)
-    if (sprite.isTouching(target)) {
-        game.addScore(1)
-        if (game.score() == 2) {
-            sprite2 = game.createSprite(old_x, old_y)
+function drawScreen () {
+    led.plot(x_target, y_target)
+    for (let index = 0; index <= score; index++) {
+        led.plot(list[2 * index], list[2 * index + 1])
+    }
+}
+let isInList = false
+let y_target = 0
+let x_target = 0
+let list: number[] = []
+let direction = ""
+let score = 0
+score = 0
+direction = "right"
+list = [0, 0]
+led.toggle(list[0], list[1])
+targetNewPoint()
+led.toggle(x_target, y_target)
+drawScreen()
+basic.pause(1000)
+while (list[0] < 5 && (list[0] >= 0 && (list[1] < 5 && list[1] >= 0)) && score < 25) {
+    basic.clearScreen()
+    list.insertAt(2, list[0])
+    list.insertAt(3, list[1])
+    // movement if statements
+    // 
+    if (direction == "right") {
+        list[0] = list[0] + 1
+    } else if (direction == "down") {
+        list[1] = list[1] + 1
+    } else if (direction == "left") {
+        list[0] = list[0] + -1
+    } else {
+        list[1] = list[1] + -1
+    }
+    if (list[0] == x_target && list[1] == y_target) {
+        score += 1
+        targetNewPoint()
+        led.plot(x_target, y_target)
+    }
+    drawScreen()
+    for (let index = 0; index < 2; index++) {
+        basic.pause(40)
+        led.toggle(x_target, y_target)
+        for (let index = 0; index < 9; index++) {
+            basic.pause(40)
+            led.toggle(list[0], list[1])
         }
-        if (game.score() == 3) {
-            old_x_2 = old_x
-            old_y_2 = old_y
-            sprite3 = game.createSprite(old_x_2, old_y_2)
-        }
     }
-    if (game.score() >= 2) {
-        sprite2.set(LedSpriteProperty.X, old_x)
-        sprite2.set(LedSpriteProperty.Y, old_y)
-    }
-    if (game.score() >= 3) {
-        sprite3.set(LedSpriteProperty.X, old_x_2)
-        sprite3.set(LedSpriteProperty.Y, old_y_2)
-    }
-    basic.pause(1000)
+}
+if (score == 25) {
+    basic.showIcon(IconNames.Yes)
+} else {
+    basic.showIcon(IconNames.No)
 }
