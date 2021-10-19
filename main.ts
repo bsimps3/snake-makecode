@@ -9,7 +9,14 @@ function targetNewPoint () {
     }
 }
 input.onButtonPressed(Button.A, function () {
-    direction = "left"
+    lastbuttonTimer = buttonTimer
+    buttonTimer = control.millis()
+    diffTimeA = buttonTimer - lastbuttonTimer
+    if (diffTimeA < 400) {
+        direction = "up"
+    } else {
+        direction = "left"
+    }
 })
 input.onButtonPressed(Button.AB, function () {
     direction = "down"
@@ -27,9 +34,6 @@ function isSnake (x: number, y: number) {
     }
     return false
 }
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    direction = "up"
-})
 function drawScreen () {
     led.plot(x_target, y_target)
     for (let index2 = 0; index2 <= score; index2++) {
@@ -37,13 +41,17 @@ function drawScreen () {
     }
 }
 let index3 = 0
+let diffTimeA = 0
+let lastbuttonTimer = 0
 let isInList = false
 let y_target = 0
 let x_target = 0
 let list: number[] = []
 let direction = ""
+let buttonTimer = 0
 let score = 0
 score = 0
+buttonTimer = 0
 direction = "right"
 list = [0, 0]
 led.toggle(list[0], list[1])
@@ -89,3 +97,6 @@ if (score == 25) {
 } else {
     basic.showIcon(IconNames.No)
 }
+basic.forever(function () {
+	
+})
