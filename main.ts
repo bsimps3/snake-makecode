@@ -17,9 +17,6 @@ input.onButtonPressed(Button.AB, function () {
 input.onButtonPressed(Button.B, function () {
     direction = "right"
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    direction = "up"
-})
 function isSnake (x: number, y: number) {
     for (let index = 0; index <= score; index++) {
         if (x == list[2 * index] && y == list[index * 2 + 1]) {
@@ -28,10 +25,13 @@ function isSnake (x: number, y: number) {
     }
     return false
 }
+input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    direction = "up"
+})
 function drawScreen () {
     led.plot(x_target, y_target)
-    for (let index = 0; index <= score; index++) {
-        led.plot(list[2 * index], list[2 * index + 1])
+    for (let index2 = 0; index2 <= score; index2++) {
+        led.plot(list[2 * index2], list[2 * index2 + 1])
     }
 }
 let isInList = false
@@ -53,7 +53,6 @@ while (list[0] < 5 && (list[0] >= 0 && (list[1] < 5 && list[1] >= 0)) && score <
     list.insertAt(2, list[0])
     list.insertAt(3, list[1])
     // movement if statements
-    // 
     if (direction == "right") {
         list[0] = list[0] + 1
     } else if (direction == "down") {
